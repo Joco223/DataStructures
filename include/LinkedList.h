@@ -77,6 +77,7 @@ public:
 			i++;
 		}
 		if(i == 0) {first = first->next;}else{prev->next = target->next;}
+		length--;
 	}
 
 	//Apply a function to all elements of the linked list
@@ -86,6 +87,19 @@ public:
 			current->content = f(current->content);
 			current = current->next;
 		}
+	}
+
+	//Apply a function to all elements of the linked list and remove ones that return false
+	void filterFunction(bool f(T)) {
+		Link* current;
+		int index = 0;
+		int removedElements = 0;
+		while(current != nullptr) {
+			bool result = f(current->content);
+			current = current->next;
+			if(result) {index++;}else{removeElement(index); removedElements++;}
+		}
+		length -= removedElements;
 	}
 
 	//Apply a function to pairs of elements from two linked lists
