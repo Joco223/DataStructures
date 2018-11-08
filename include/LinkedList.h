@@ -37,6 +37,17 @@ public:
 	//Get the length of the linked list
 	int getLength() {return length;}
 
+	//Get an element from target position from the linked list
+	T getElement(int targetPos) {
+		int i = 0;
+		Link* target = first;
+		while(i < targetPos) {
+			target = target->next;
+			i++;
+		}
+		return target->content;
+	}
+
 	//Add a new element after the target position to the linked list
 	void addElement(T element, int targetPos) {
 		int i = 0;
