@@ -37,18 +37,18 @@ public:
 	//Get the length of the linked list
 	int getLength() {return length;}
 
-	//Get an element from target position from the linked list
-	T getElement(int targetPos) {
+	//Get a pointer to an element from target position from the linked list
+	Link* getElement(int targetPos) {
 		int i = 0;
 		Link* target = first;
 		while(i < targetPos) {
 			target = target->next;
 			i++;
 		}
-		return target->content;
+		return target;
 	}
 
-	//Swap two elements in the linked list
+	//Swap two elements in the linked list by indexes
 	void swapElements(int targetPos1, int targetPos2) {
 		int i = 0;
 		Link* target = first;
@@ -67,6 +67,13 @@ public:
 		target2->content = temp;
 	}
 
+	//Swap two elements in the linked list by pointers
+	void swapElements(Link* targetPos1, Link* targetPos2) {
+		T temp = targetPos1->content;
+		targetPos1->content = targetPos2->content;
+		targetPos2->content = temp;
+	}
+
 	//Reverse the elements in the linked list
 	void reverseElements() {
 		int i = 0;
@@ -76,6 +83,30 @@ public:
 			i++;
 			leftover -= 2;
 		}
+	}
+
+	//Sort elements in the linked list
+	void sort(bool f(T, T)) {
+		for(int i = 0; i < length-1; i++){
+			for(int j = 0; j < length-i-1; j++){
+				Link* current = getElement(j);
+				Link* next = getElement(j+1);
+				if(current != nullptr && next != nullptr) {
+					if(f(current->content, next->content)) {
+						swapElements(current, next);
+					} 
+				}
+			}
+		}
+	}
+
+	//Connect ends of to lists
+	static LinkedList<T> connect(LinkedList<T>& A, LinkedList<T>& B) {
+		LinkedList<T> newLL;
+		int offset = 0;
+		for(int i = 0; i < A.getLength(); i++) {newLL.addElement(A.getElement(i)->content, offset); offset++;}
+		for(int i = 0; i < B.getLength(); i++) {newLL.addElement(B.getElement(i)->content, offset); offset++;}
+		return newLL;
 	}
 
 	//Add a new element after the target position to the linked list
@@ -112,7 +143,7 @@ public:
 
 	//Apply a function to all elements of the linked list
 	void applyFunction(T f(T)) {
-		Link* current;
+		Link* current = first;
 		while(current != nullptr) {
 			current->content = f(current->content);
 			current = current->next;
@@ -121,23 +152,21 @@ public:
 
 	//Apply a function to all elements of the linked list and remove ones that return false
 	void filterFunction(bool f(T)) {
-		Link* current;
+		Link* current = first;
 		int index = 0;
-		int removedElements = 0;
 		while(current != nullptr) {
 			bool result = f(current->content);
 			current = current->next;
-			if(result) {index++;}else{removeElement(index); removedElements++;}
+			if(result) {index++;}else{removeElement(index);}
 		}
-		length -= removedElements;
 	}
 
 	//Apply a function to pairs of elements from two linked lists
-	static LinkedList<T> applyFunctionToPairs(LinkedList<T> A, LinkedList<T> B, T f(T, T)) {
+	static LinkedList<T> applyFunctionToPairs(LinkedList<T>& A, LinkedList<T>& B, T f(T, T)) {
 		LinkedList<T> newLL;
 		Link* currentA = A.first;
 		Link* currentB = B.first;
-		while(currentA != nullptr || currentB != nullptr) {
+		while(currentA != nullptr || currentB != nullptr) { 
 			newLL.addElement(f(currentA->content, currentB->content), newLL.getLength());
 			currentA = currentA->next;
 			currentB = currentB->next;
