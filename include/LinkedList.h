@@ -48,6 +48,36 @@ public:
 		return target->content;
 	}
 
+	//Swap two elements in the linked list
+	void swapElements(int targetPos1, int targetPos2) {
+		int i = 0;
+		Link* target = first;
+		while(i < targetPos1) {
+			target = target->next;
+			i++;
+		}
+		int i2 = 0;
+		Link* target2 = first;
+		while(i2 < targetPos2) {
+			target2 = target2->next;
+			i2++;
+		}
+		T temp = target->content;
+		target->content = target2->content;
+		target2->content = temp;
+	}
+
+	//Reverse the elements in the linked list
+	void reverseElements() {
+		int i = 0;
+		int leftover = length;
+		while(leftover > 2) {
+			swapElements(i, length-i-1);
+			i++;
+			leftover -= 2;
+		}
+	}
+
 	//Add a new element after the target position to the linked list
 	void addElement(T element, int targetPos) {
 		int i = 0;

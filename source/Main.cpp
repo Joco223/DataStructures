@@ -12,11 +12,8 @@ int addPairs(int x, int y) {return x + y;}
 int main(int argc, char** argv) {
 
 	LinkedList<int> A = {12, 55, 1, 88, -10};
-	A.filterFunction(biggerThan10);
+	A.reverseElements();
 	A.print();
-	/*LinkedList<int> B = {5 , 11, 5, 2 ,  20};
-	LinkedList<int> C = LinkedList<int>::applyFunctionToPairs(A, B, addPairs);
-	C.print();*/
 
 	return 0;
 }
