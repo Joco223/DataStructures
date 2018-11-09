@@ -40,7 +40,8 @@ public:
 	//Get a pointer to an element from target position from the linked list
 	Link* getElement(int targetPos) {
 		int i = 0;
-		Link* target = first;
+		Link* target;
+		if(targetPos < 0) {target = nullptr;}else{target = first;}
 		while(i < targetPos) {
 			target = target->next;
 			i++;
@@ -85,7 +86,7 @@ public:
 		}
 	}
 
-	//Sort elements in the linked list
+	//Sort elements in the linked list using bubble sort
 	void sort(bool f(T, T)) {
 		for(int i = 0; i < length-1; i++){
 			for(int j = 0; j < length-i-1; j++){
@@ -111,33 +112,21 @@ public:
 
 	//Add a new element after the target position to the linked list
 	void addElement(T element, int targetPos) {
-		int i = 0;
-		Link* target = first;
-		Link* prev = nullptr;
-		while(i < targetPos) {
-			if(prev == nullptr) {prev = first;}else{prev = prev->next;}
-			target = target->next;
-			i++;
-		}
+		Link* target = getElement(targetPos);
+		Link* prev = getElement(targetPos-1);
 		Link* current = new Link(element, nullptr);
 		current->content = element;
 		current->next = target;
 		if(prev != nullptr) {prev->next = current;}
-		if(i == 0) {first = current;}
+		if(targetPos == 0) {first = current;}
 		length++;
 	}
 
 	//Remove an element from the target position from the linked list
 	void removeElement(int targetPos) {
-		int i = 0;
-		Link* target = first;
-		Link* prev = nullptr;
-		while(i < targetPos) {
-			if(prev == nullptr) {prev = first;}else{prev = prev->next;}
-			target = target->next;
-			i++;
-		}
-		if(i == 0) {first = first->next;}else{prev->next = target->next;}
+		Link* target = getElement(targetPos);
+		Link* prev = getElement(targetPos-1);
+		if(targetPos == 0) {first = first->next;}else{prev->next = target->next;}
 		length--;
 	}
 
@@ -162,7 +151,7 @@ public:
 	}
 
 	//Apply a function to pairs of elements from two linked lists
-	static LinkedList<T> applyFunctionToPairs(LinkedList<T>& A, LinkedList<T>& B, T f(T, T)) {
+	static LinkedList<T> pairs(LinkedList<T>& A, LinkedList<T>& B, T f(T, T)) {
 		LinkedList<T> newLL;
 		Link* currentA = A.first;
 		Link* currentB = B.first;
@@ -172,6 +161,21 @@ public:
 			currentB = currentB->next;
 		}
 		return newLL;
+	}
+
+	//Remove duplicates from the list
+	void unique(bool f(T, T)) {
+		for(int i = 0; i < length; i++) {
+			Link* current = getElement(i);
+			bool exists = false;
+			for(int j = 0; j < length; j++) {
+				Link* comparison = getElement(j);
+				if(j != i && f(current->content, comparison->content)) {
+					removeElement(j);
+					break;
+				}
+			}
+		}
 	}
 
 	//Print all of the elements of the linked list
