@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "LinkedList.h"
+#include "Stack.h"
 
 bool biggerThan10(int x) {return x>10;}
 
@@ -15,11 +16,14 @@ bool same(int x, int y) {return x == y;}
 
 int main(int argc, char** argv) {
 
-	LinkedList<int> A = {12, 55, 12, 88, 12};
-	//A.sort(bigger);
-	//A.filterFunction(even);
-	A.unique(same);
-	A.print();
+	Stack<int> test;
+	test.push(5);
+	test.push(-10);
+	std::cout << test.peek() << '\n';
+	std::cout << test.isFull() << '\n';
+	std::cout << test.isEmpty() << '\n';
+	test.pop();
+	std::cout << test.peek() << '\n';
 
 	return 0;
 }
