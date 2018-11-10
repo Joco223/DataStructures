@@ -33,6 +33,11 @@ public:
 		}	
 	};
 
+	//Destructor
+	~LinkedList() {
+		while(length > 0) {removeElement(length-1);}
+	};
+
 	//Get pointer to first element
 	Link* getFirst() {return first;}
 
