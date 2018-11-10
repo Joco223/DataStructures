@@ -18,12 +18,8 @@ bool same(int x, int y) {return x == y;}
 
 int main(int argc, char** argv) {
 
-	Queue<int> test;
-	test.push(2);
-	test.push(3);
-	std::cout << test.peek_back() << " " << test.peek_front() << '\n';
-	test.pop();
-	std::cout << test.peek_back() << " " << test.peek_front() << '\n';
+	LinkedList<int> A = {1, 22, -123, 7777};
+	std::cout << A.exists(11, same) << '\n';
 
 	return 0;
 }

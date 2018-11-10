@@ -165,7 +165,7 @@ public:
 		return newLL;
 	}
 
-	//Remove duplicates from the list
+	//Remove duplicates from the linked list
 	void unique(bool f(T, T)) {
 		for(int i = 0; i < length; i++) {
 			Link* current = getElement(i);
@@ -178,6 +178,16 @@ public:
 				}
 			}
 		}
+	}
+
+	//Find if element exists in the linked list
+	bool exists(T x, bool f(T, T)) {
+		bool exists = false;
+		for(int i = 0; i < length; i++) {
+			Link* current = getElement(i);
+			if(f(x, current->content)) {exists = true; break;}
+		}
+		return exists;
 	}
 
 	//Print all of the elements of the linked list
