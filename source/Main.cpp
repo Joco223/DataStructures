@@ -2,6 +2,8 @@
 
 #include "LinkedList.h"
 #include "Stack.h"
+#include "Deque.h"
+#include "Queue.h"
 
 bool biggerThan10(int x) {return x>10;}
 
@@ -16,14 +18,12 @@ bool same(int x, int y) {return x == y;}
 
 int main(int argc, char** argv) {
 
-	Stack<int> test;
-	test.push(5);
-	test.push(-10);
-	std::cout << test.peek() << '\n';
-	std::cout << test.isFull() << '\n';
-	std::cout << test.isEmpty() << '\n';
+	Queue<int> test;
+	test.push(2);
+	test.push(3);
+	std::cout << test.peek_back() << " " << test.peek_front() << '\n';
 	test.pop();
-	std::cout << test.peek() << '\n';
+	std::cout << test.peek_back() << " " << test.peek_front() << '\n';
 
 	return 0;
 }
