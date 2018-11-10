@@ -4,7 +4,7 @@
 #include "Stack.h"
 #include "Deque.h"
 #include "Queue.h"
-#include "BTree.h"
+#include "BinaryTree.h"
 
 bool biggerThan10(int x) {return x>10;}
 
@@ -19,7 +19,8 @@ bool same(int x, int y) {return x == y;}
 
 int main(int argc, char** argv) {
 
-	BTree<int> test({11, 123, 2, 66, 44}, bigger);
+	BinaryTree<int> test({11, 123, 2, 66, 44}, bigger);
+	test.print();
 
 	return 0;
 }

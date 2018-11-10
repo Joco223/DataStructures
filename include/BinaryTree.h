@@ -5,7 +5,7 @@
 #include <iostream>
 
 template<typename T>
-class BTree {
+class BinaryTree {
 private:
 	struct Node {
 		Node* parent;
@@ -81,9 +81,9 @@ private:
 
 public:
 	//Constructors
-	BTree(bool f(T, T)) {root = nullptr; comparison = f;};
+	BinaryTree(bool f(T, T)) {root = nullptr; comparison = f;};
 
-	BTree(std::initializer_list<T> input, bool f(T, T)) {
+	BinaryTree(std::initializer_list<T> input, bool f(T, T)) {
 		root = nullptr;
 		comparison = f;
 		for(T item : input) {
@@ -100,7 +100,7 @@ public:
 	};
 
 	//Deconstructor
-	~BTree() {delete_branch(root);}
+	~BinaryTree() {delete_branch(root);}
 
 	//Recursive insert caller
 	void insert(T item) {
