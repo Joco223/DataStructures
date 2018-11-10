@@ -16,6 +16,16 @@ private:
 	Node* root;
 	std::function<bool(T, T)> comparison;
 
+	//Recursive delete function
+	void delete_branch(Node* branch) {
+		if(branch != nullptr) {
+			delete_branch(branch->left);
+			delete_branch(branch->right);
+			delete branch;
+			branch = nullptr;
+		}	
+	};
+
 	//Recursive insert function
 	void insert(T item, Node* branch) {
 		if(comparison(item, branch->content)) {
@@ -88,6 +98,9 @@ public:
 			}
 		}
 	};
+
+	//Deconstructor
+	~BTree() {delete_branch(root);}
 
 	//Recursive insert caller
 	void insert(T item) {

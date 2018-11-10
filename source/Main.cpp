@@ -20,11 +20,6 @@ bool same(int x, int y) {return x == y;}
 int main(int argc, char** argv) {
 
 	BTree<int> test({11, 123, 2, 66, 44}, bigger);
-	test.print();
-	std::cout << "New tree" << '\n' << '\n';
-	test.insert(55);
-	test.print();
-	std::cout << '\n' << test.search(55, same)->parent->content << '\n';
 
 	return 0;
 }
