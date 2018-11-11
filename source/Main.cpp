@@ -33,21 +33,21 @@ int main(int argc, char** argv) {
 		std::forward_list<int> standard;
 
 		t = clock();
-		for(int i = 0; i < 1000000; i++) {mine.addElementFront(i);}
+		for(int i = 0; i < 10000; i++) {mine.addElementFront(i);}
 		//LinkedList<int>::Link* it = mine.getElement(it);
 		//while(it != nullptr) {sum1 += it->content; it = it->next;}
-		for(int i = 0; i < 1000000; i++) {sum1 += mine.getElement(i)->content;}
+		for(int i = 0; i < 10000; i++) {sum1 += mine.getElement(i)->content;}
 		t = clock() - t;
 		float tot1 = t;
 		tot1A += tot1;
 
 		t = clock();
-		for(int i = 0; i < 1000000; i++) {standard.push_front(i);}
+		for(int i = 0; i < 10000; i++) {standard.push_front(i);}
 		for(auto element: standard) sum2 += element;
 		t = clock() - t;
 		float tot2 = t;
 		tot2A += tot2;
-
+		
 		tot += (tot2/tot1);
 		std::cout << "Round " << j << " complete." << '\n';
 	}

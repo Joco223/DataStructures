@@ -161,6 +161,7 @@ public:
 	//Add a new element to the front of the linked list
 	void addElementFront(T element) {
 		Link* node = new Link(element, first);
+		if(first == nullptr) {last = node;}
 		first = node;
 		length++;
 	}
