@@ -10,6 +10,7 @@ private:
 		Link* next;
 		Link(T t, Link* l) {content = t; next = l;};
 	};
+
 	Link* first;
 	Link* last;
 	int length;
@@ -162,11 +163,9 @@ public:
 
 	//Add a new element after the target position to the linked list
 	void addElement(T element, int targetPos) {
-		Link* target = getElement(targetPos);
 		Link* prev = getElement(targetPos-1);
-		Link* current = new Link(element, nullptr);
-		current->content = element;
-		current->next = target;
+		Link* target = prev->next;
+		Link* current = new Link(element, target);
 		if(prev != nullptr) {prev->next = current;}
 		if(targetPos == 0) {first = current;}
 		if(targetPos == length-1) {last = current;}

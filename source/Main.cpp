@@ -31,15 +31,15 @@ int main(int argc, char** argv) {
 	for(int j = 0; j < 100; j++) {
 		LinkedList<int> mine = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		std::list<int> standard(10, 0);
-		t = clock();
-		for(int i = 0; i < 10000; i++) {mine.addElement(5, i);}
+		t = clock();;
+		for(int i = 0; i < 1000000; i++) {mine.addElement(i, 5);}
 		t = clock() - t;
 		float tot1 = t;
 		tot1A += tot1;
 		std::list<int>::iterator it = standard.begin();
 		std::advance(it, 4);
 		t = clock();
-		for(int i = 0; i < 10000; i++) {standard.insert(it, i);}
+		for(int i = 0; i < 1000000; i++) {standard.insert(it, i);}
 		t = clock() - t;
 		float tot2 = t;
 		tot2A += tot2;
