@@ -11,31 +11,54 @@ private:
 		Link(T t, Link* l) {content = t; next = l;};
 	};
 	Link* first;
+	Link* last;
 	int length;
 public:
-
 	//Constructor without parameters
 	LinkedList() {
 		first = nullptr;
+		last = nullptr;
 		length = 0;
 	}
 
 	//Constructor, create a linked list with given elements
 	LinkedList(std::initializer_list<T> input) {
 		first = nullptr;
+		last = nullptr;
 		length = 0;
+		bool firstL = true;
 		for(auto item = std::rbegin(input); item != std::rend(input); ++item) {
-			Link* current = new Link(*item, nullptr);
-			current->content = *item;
-			current->next = first;
+			Link* current = new Link(*item, first);
+			if(firstL) {last = current;}
 			first = current;
 			length++;
-		}	
+		}
 	};
 
 	//Destructor
 	~LinkedList() {
-		while(length > 0) {removeElement(length-1);}
+		Link* current = first;
+		while(current != nullptr) {
+			Link* tmp = current;
+			current = current->next;
+			delete tmp;
+			length--;
+		}
+		first = nullptr;
+		last = nullptr;
+	};
+
+	//Clears the whole linked list
+	void clear() {
+		Link* current = first;
+		while(current != nullptr) {
+			Link* tmp = current;
+			current = current->next;
+			delete tmp;
+			length--;
+		}
+		first = nullptr;
+		last = nullptr;
 	};
 
 	//Get pointer to first element
@@ -44,14 +67,28 @@ public:
 	//Get the length of the linked list
 	int getLength() {return length;}
 
+	//Get first element
+	Link* getElementFront() {
+		return first;
+	}
+
+	//Get last element
+	Link* getElementBack() {
+		return last;
+	}
+
 	//Get a pointer to an element from target position from the linked list
 	Link* getElement(int targetPos) {
 		int i = 0;
 		Link* target;
 		if(targetPos < 0) {target = nullptr;}else{target = first;}
-		while(i < targetPos) {
-			target = target->next;
-			i++;
+		if(targetPos == length-1) {
+			target = last;
+		}else{
+			while(i < targetPos) {
+				target = target->next;
+				i++;
+			}
 		}
 		return target;
 	}
@@ -59,17 +96,8 @@ public:
 	//Swap two elements in the linked list by indexes
 	void swapElements(int targetPos1, int targetPos2) {
 		int i = 0;
-		Link* target = first;
-		while(i < targetPos1) {
-			target = target->next;
-			i++;
-		}
-		int i2 = 0;
-		Link* target2 = first;
-		while(i2 < targetPos2) {
-			target2 = target2->next;
-			i2++;
-		}
+		Link* target = getElement(targetPos1);
+		Link* target2 = getElement(targetPos2);
 		T temp = target->content;
 		target->content = target2->content;
 		target2->content = temp;
@@ -117,6 +145,21 @@ public:
 		return newLL;
 	}
 
+	//Add a new element to the front of the linked list
+	void addElementFront(T element) {
+		Link* node = new Link(element, first);
+		first = node;
+		length++;
+	}
+
+	//Add a new element to the front of the linked list
+	void addElementBack(T element) {
+		Link* node = new Link(element, nullptr);
+		if(last != nullptr) {last->next = node;}
+		last = node;
+		length++;
+	}
+
 	//Add a new element after the target position to the linked list
 	void addElement(T element, int targetPos) {
 		Link* target = getElement(targetPos);
@@ -126,6 +169,7 @@ public:
 		current->next = target;
 		if(prev != nullptr) {prev->next = current;}
 		if(targetPos == 0) {first = current;}
+		if(targetPos == length-1) {last = current;}
 		length++;
 	}
 
@@ -134,6 +178,7 @@ public:
 		Link* target = getElement(targetPos);
 		Link* prev = getElement(targetPos-1);
 		if(targetPos == 0) {first = first->next;}else{prev->next = target->next;}
+		if(targetPos == length-1) {last = prev; prev->next = nullptr;}
 		length--;
 	}
 

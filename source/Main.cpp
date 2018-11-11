@@ -1,4 +1,6 @@
 #include <iostream>
+#include <time.h>
+#include <list>
 
 #include "LinkedList.h"
 #include "Stack.h"
@@ -19,8 +21,36 @@ bool same(int x, int y) {return x == y;}
 
 int main(int argc, char** argv) {
 
-	BinaryTree<int> test({11, 123, 2, 66, 44}, bigger);
-	test.print();
+	clock_t t;
+	float tot = 0;
+	float tot1A = 0;
+	float tot2A = 0;
+	int sum1 = 0;
+	int sum2 = 0;
+	
+	for(int j = 0; j < 100; j++) {
+		LinkedList<int> mine = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		std::list<int> standard(10, 0);
+		t = clock();
+		for(int i = 0; i < 10000; i++) {mine.addElement(5, i);}
+		t = clock() - t;
+		float tot1 = t;
+		tot1A += tot1;
+		std::list<int>::iterator it = standard.begin();
+		std::advance(it, 4);
+		t = clock();
+		for(int i = 0; i < 10000; i++) {standard.insert(it, i);}
+		t = clock() - t;
+		float tot2 = t;
+		tot2A += tot2;
+		tot += (tot2/tot1);
+		std::cout << "Round " << j << " complete." << '\n';
+	}
+	std::cout << '\n';
+	float avg = tot/100;
+	std::cout << "Custom implementation average took: " << tot1A/100.0 << " ticks." << '\n'; 
+	std::cout << "Standard implementation average took: " << tot2A/100.0 << " ticks." << '\n';
+	std::cout << "Custom implementation speed is " << avg*100 << "% standard implementation speed." << '\n';
 
 	return 0;
 }
