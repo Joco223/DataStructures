@@ -4,17 +4,20 @@
 
 template<class T>
 class LinkedList {
+public:
+	struct Link;
 private:
-	struct Link {
-		T content;
-		Link* next;
-		Link(T t, Link* l) {content = t; next = l;};
-	};
-
 	Link* first;
 	Link* last;
 	int length;
 public:
+	struct Link {
+		T content;
+		Link* next;
+		Link() {next = nullptr;};
+		Link(T t, Link* l) {content = t; next = l;};
+	};
+
 	//Constructor without parameters
 	LinkedList() {
 		first = nullptr;
@@ -76,6 +79,15 @@ public:
 	//Get last element
 	Link* getElementBack() {
 		return last;
+	}
+
+	//Iterate an iterator trough the linked list
+	Link* getElement(Link* it) {
+		if(it == nullptr) {
+			return first;
+		}else{
+			return it->next;
+		}	
 	}
 
 	//Get a pointer to an element from target position from the linked list

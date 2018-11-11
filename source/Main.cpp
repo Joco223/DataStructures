@@ -1,6 +1,6 @@
 #include <iostream>
 #include <time.h>
-#include <list>
+#include <forward_list>
 
 #include "LinkedList.h"
 #include "Stack.h"
@@ -29,20 +29,25 @@ int main(int argc, char** argv) {
 	int sum2 = 0;
 	
 	for(int j = 0; j < 100; j++) {
-		LinkedList<int> mine = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		std::list<int> standard(10, 0);
-		t = clock();;
+		LinkedList<int> mine;
+		std::forward_list<int> standard;
+
+		t = clock();
 		for(int i = 0; i < 1000000; i++) {mine.addElementFront(i);}
+		//LinkedList<int>::Link* it = mine.getElement(it);
+		//while(it != nullptr) {sum1 += it->content; it = mine.getElement(it);}
 		for(int i = 0; i < 1000000; i++) {sum1 += mine.getElement(i)->content;}
 		t = clock() - t;
 		float tot1 = t;
 		tot1A += tot1;
+
 		t = clock();
 		for(int i = 0; i < 1000000; i++) {standard.push_front(i);}
-		for(std::list<int>::const_iterator iterator = standard.begin(), end = standard.end(); iterator != end; ++iterator) {sum2 += *iterator;}
+		for(auto element: standard) sum2 += element;
 		t = clock() - t;
 		float tot2 = t;
 		tot2A += tot2;
+		
 		tot += (tot2/tot1);
 		std::cout << "Round " << j << " complete." << '\n';
 	}
