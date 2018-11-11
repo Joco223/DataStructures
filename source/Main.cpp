@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
 		t = clock();
 		for(int i = 0; i < 1000000; i++) {mine.addElementFront(i);}
 		//LinkedList<int>::Link* it = mine.getElement(it);
-		//while(it != nullptr) {sum1 += it->content; it = mine.getElement(it);}
+		//while(it != nullptr) {sum1 += it->content; it = it->next;}
 		for(int i = 0; i < 1000000; i++) {sum1 += mine.getElement(i)->content;}
 		t = clock() - t;
 		float tot1 = t;
@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
 		t = clock() - t;
 		float tot2 = t;
 		tot2A += tot2;
-		
+
 		tot += (tot2/tot1);
 		std::cout << "Round " << j << " complete." << '\n';
 	}
