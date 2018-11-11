@@ -32,14 +32,14 @@ int main(int argc, char** argv) {
 		LinkedList<int> mine = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		std::list<int> standard(10, 0);
 		t = clock();;
-		for(int i = 0; i < 1000000; i++) {mine.addElement(i, 5);}
+		for(int i = 0; i < 1000000; i++) {mine.addElementFront(i);}
+		for(int i = 0; i < 1000000; i++) {sum1 += mine.getElement(i)->content;}
 		t = clock() - t;
 		float tot1 = t;
 		tot1A += tot1;
-		std::list<int>::iterator it = standard.begin();
-		std::advance(it, 4);
 		t = clock();
-		for(int i = 0; i < 1000000; i++) {standard.insert(it, i);}
+		for(int i = 0; i < 1000000; i++) {standard.push_front(i);}
+		for(std::list<int>::const_iterator iterator = standard.begin(), end = standard.end(); iterator != end; ++iterator) {sum2 += *iterator;}
 		t = clock() - t;
 		float tot2 = t;
 		tot2A += tot2;
