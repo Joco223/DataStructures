@@ -1,6 +1,7 @@
 #include <iostream>
 #include <time.h>
 #include <forward_list>
+#include <list>
 
 #include "LinkedList.h"
 #include "Stack.h"
@@ -21,6 +22,10 @@ bool same(int x, int y) {return x == y;}
 
 int main(int argc, char** argv) {
 
+	/*LinkedList<int> test = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+	test.filterFunction(even);
+	test.print();*/
+
 	clock_t t;
 	float tot = 0;
 	float tot1A = 0;
@@ -30,20 +35,23 @@ int main(int argc, char** argv) {
 	
 	for(int j = 0; j < 100; j++) {
 		LinkedList<int> mine;
-		std::forward_list<int> standard;
+		std::list<int> standard;
 
 		t = clock();
-		for(int i = 0; i < 1000000; i++) {mine.addElementFront(i);}
+		for(int i = 0; i < 1000000; i++) {mine.addElementBack(i);}
 		//mine.unique_seq(same);
-		mine.filterFunction(even);
+		mine.applyFunction(square);
+		//mine.reverseElements();
 		t = clock() - t;
 		float tot1 = t;
 		tot1A += tot1;
 
 		t = clock();
-		for(int i = 0; i < 1000000; i++) {standard.push_front(i);}
+		for(int i = 0; i < 1000000; i++) {standard.push_back(i);}
+		for(auto& i : standard) {i = square(i);}
 		//standard.unique(same);
 		standard.remove_if(even);
+		//standard.reverse();
 		t = clock() - t;
 		float tot2 = t;
 		tot2A += tot2;

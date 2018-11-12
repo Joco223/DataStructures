@@ -15,8 +15,9 @@ public:
 	struct Link {
 		T content;
 		Link* next;
-		Link() {next = nullptr;};
-		Link(T t, Link* l) {content = t; next = l;};
+		Link* last;
+		Link() {next = nullptr; last = nullptr;};
+		Link(T t, Link* n, Link* l) {content = t; next = n; last = l;};
 	};
 
 	//Constructor without parameters
@@ -32,10 +33,13 @@ public:
 		last = nullptr;
 		length = 0;
 		bool firstL = true;
+		Link* prev = nullptr;
 		for(auto item = std::rbegin(input); item != std::rend(input); ++item) {
-			Link* current = new Link(*item, first);
+			Link* current = new Link(*item, first, nullptr);
+			if(prev != nullptr) {prev->last = current;}
 			if(firstL) {last = current; firstL = false;}
 			first = current;
+			prev = current;
 			length++;
 		}
 	};
@@ -99,10 +103,17 @@ public:
 		if(targetPos == length-1) {
 			target = last;
 		}else{
-			while(i < targetPos) {
-				target = target->next;
-				i++;
-			}
+			if(targetPos < length/2) {
+				while(i < targetPos) {
+					target = target->next;
+					i++;
+				}
+			}else{
+				while(i < targetPos) {
+					target = target->last;
+					i++;
+				}
+			}	
 		}
 		return target;
 	}
@@ -126,13 +137,18 @@ public:
 
 	//Reverse the elements in the linked list
 	void reverseElements() {
+		Link* fCurrent = first;
+		Link* lCurrent = last;
+
+		int half = length/2;
 		int i = 0;
-		int leftover = length;
-		while(leftover > 2) {
-			swapElements(i, length-i-1);
+		while(i < half) {
+			swapElements(fCurrent, lCurrent);
+			fCurrent = fCurrent->next;
+			lCurrent = lCurrent->last;
 			i++;
-			leftover -= 2;
 		}
+		
 	}
 
 	//Sort elements in the linked list using bubble sort
@@ -154,8 +170,10 @@ public:
 	static LinkedList<T> connect(LinkedList<T>& A, LinkedList<T>& B) {
 		LinkedList<T> newLL;
 		int offset = 0;
-		for(int i = 0; i < A.getLength(); i++) {newLL.addElement(A.getElement(i)->content, offset); offset++;}
-		for(int i = 0; i < B.getLength(); i++) {newLL.addElement(B.getElement(i)->content, offset); offset++;}
+		Link* AL = A.first;
+		Link* BL = B.first;
+		while(AL != nullptr) {newLL.addElementBack(AL->content); AL = AL->next;}
+		while(BL != nullptr) {newLL.addElementBack(BL->content); BL = BL->next;}
 		return newLL;
 	}
 
@@ -169,8 +187,9 @@ public:
 
 	//Add a new element to the front of the linked list
 	void addElementBack(T element) {
-		Link* node = new Link(element, nullptr);
-		if(last != nullptr) {last->next = node;}
+		Link* node = new Link(element, nullptr, last);
+		if(last != nullptr) {last->next = node; node->last = last;}
+		if(first == nullptr) {first = node;}
 		last = node;
 		length++;
 	}
@@ -179,27 +198,51 @@ public:
 	void addElement(T element, int targetPos) {
 		Link* prev = getElement(targetPos-1);
 		Link* target = prev->next;
-		Link* current = new Link(element, target);
+		Link* current = new Link(element, target, prev);
 		if(prev != nullptr) {prev->next = current;}
 		if(targetPos == 0) {first = current;}
 		if(targetPos == length-1) {last = current;}
 		length++;
 	}
 
+	//Remove last element from the linked list
+	void removeElementBack() {
+		last = last->prev; 
+		last->next = nullptr;
+	}
+
+	//Remove the first element from the list
+	void removeElementFront() {
+		first = first->next;
+	}
+
 	//Remove an element from the target position from the linked list
 	void removeElement(int targetPos) {
-		Link* target = getElement(targetPos);
 		Link* prev = getElement(targetPos-1);
-		if(targetPos == 0) {first = first->next;}else{prev->next = target->next;}
-		if(targetPos == length-1) {last = prev; prev->next = nullptr;}
+		Link* target = prev->next;
+		if(targetPos == 0) {
+			first = first->next;
+		}else{
+			prev->next = target->next;
+		}
+		if(targetPos == length-1) {
+			last = prev; prev->next = nullptr;
+		}
 		length--;
 	}
 
 	//Remove an element from the linked list
-	void removeElement(Link* prev) {
-		Link* target;
-		if(prev == nullptr) {first = first->next;}else{target = prev->next; prev->next = target->next;}
-		if(prev == last) {last = prev; prev->next = nullptr;}
+	void removeElement(Link* target) {
+		Link* prev = target->last;
+		if(prev == nullptr) {
+			first = first->next;
+		}else{
+			prev->next = target->next;
+		}
+		if(prev == last) {
+			last = prev; 
+			prev->next = nullptr;
+		}
 		length--;
 	}
 
@@ -214,14 +257,11 @@ public:
 
 	//Apply a function to all elements of the linked list and remove ones that return false
 	void filterFunction(bool f(T)) {
-		Link* prev = nullptr;
 		Link* current = first;
 		while(current != nullptr) {
 			bool result = f(current->content);
-			if(!result) {removeElement(prev);}
-			prev = current;
-			current = current->next;
-			
+			if(!result) {removeElement(current);}
+			current = current->next;		
 		}
 	}
 
@@ -231,7 +271,7 @@ public:
 		Link* currentA = A.first;
 		Link* currentB = B.first;
 		while(currentA != nullptr || currentB != nullptr) { 
-			newLL.addElement(f(currentA->content, currentB->content), newLL.getLength());
+			newLL.addElementFront(f(currentA->content, currentB->content));
 			currentA = currentA->next;
 			currentB = currentB->next;
 		}
@@ -243,14 +283,12 @@ public:
 		Link* prev = nullptr;
 		Link* current = first;
 		while(current != nullptr) {
-			Link* tempPrev = current;
 			Link* temp = current->next;
 			if(temp != nullptr) {
 				while(f(temp->content, current->content)) {
-					removeElement(tempPrev);
-					tempPrev = current;
-					temp = current->next;
+					removeElement(temp);
 				}
+				temp = temp->next;
 			}
 			prev = current;
 			current = current->next;
@@ -260,7 +298,6 @@ public:
 	//Remove duplicates from the linked list
 	void unique(bool f(T, T)) {
 		std::vector<T> seen;
-		Link* prev = nullptr;
 		Link* current = first;
 		while(current != nullptr) {
 			bool exists = false;
@@ -268,11 +305,10 @@ public:
 				if(f(current->content, v)) {exists = true; break;}
 			}
 			if(exists) {
-				removeElement(prev);
+				removeElement(current);
 			}else{
 				seen.push_back(current->content);
 			}
-			prev = current;
 			current = current->next;
 		}
 	}
@@ -280,9 +316,10 @@ public:
 	//Find if element exists in the linked list
 	bool exists(T x, bool f(T, T)) {
 		bool exists = false;
-		for(int i = 0; i < length; i++) {
-			Link* current = getElement(i);
+		Link* current = first;
+		while(current != nullptr) {
 			if(f(x, current->content)) {exists = true; break;}
+			current = current->next;
 		}
 		return exists;
 	}
