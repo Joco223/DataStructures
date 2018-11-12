@@ -33,15 +33,17 @@ int main(int argc, char** argv) {
 		std::forward_list<int> standard;
 
 		t = clock();
-		for(int i = 0; i < 20000; i++) {mine.addElementFront(i);}
-		mine.unique(same);
+		for(int i = 0; i < 1000000; i++) {mine.addElementFront(i);}
+		//mine.unique_seq(same);
+		mine.filterFunction(even);
 		t = clock() - t;
 		float tot1 = t;
 		tot1A += tot1;
 
 		t = clock();
-		for(int i = 0; i < 20000; i++) {standard.push_front(i);}
-		standard.unique(same);
+		for(int i = 0; i < 1000000; i++) {standard.push_front(i);}
+		//standard.unique(same);
+		standard.remove_if(even);
 		t = clock() - t;
 		float tot2 = t;
 		tot2A += tot2;

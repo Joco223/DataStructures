@@ -198,10 +198,7 @@ public:
 	//Remove an element from the linked list
 	void removeElement(Link* prev) {
 		Link* target;
-		if(prev == nullptr) {first = first->next;}else{
-			target = prev->next;
-			prev->next = target->next;
-		}
+		if(prev == nullptr) {first = first->next;}else{target = prev->next; prev->next = target->next;}
 		if(prev == last) {last = prev; prev->next = nullptr;}
 		length--;
 	}
@@ -241,12 +238,30 @@ public:
 		return newLL;
 	}
 
+	//Remove duplicates from sequences in the linked list
+	void unique_seq(bool f(T, T)) {
+		Link* prev = nullptr;
+		Link* current = first;
+		while(current != nullptr) {
+			Link* tempPrev = current;
+			Link* temp = current->next;
+			if(temp != nullptr) {
+				while(f(temp->content, current->content)) {
+					removeElement(tempPrev);
+					tempPrev = current;
+					temp = current->next;
+				}
+			}
+			prev = current;
+			current = current->next;
+		}
+	}
+
 	//Remove duplicates from the linked list
 	void unique(bool f(T, T)) {
 		std::vector<T> seen;
 		Link* prev = nullptr;
 		Link* current = first;
-		int i = 0;
 		while(current != nullptr) {
 			bool exists = false;
 			for(auto v : seen) {
@@ -259,7 +274,6 @@ public:
 			}
 			prev = current;
 			current = current->next;
-			i++;
 		}
 	}
 
