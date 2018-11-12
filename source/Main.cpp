@@ -32,13 +32,14 @@ int main(int argc, char** argv) {
 	float tot2A = 0;
 	volatile int sum1 = 0;
 	volatile int sum2 = 0;
+	float loopCount = 50;
 	
-	for(int j = 0; j < 100; j++) {
+	for(int j = 0; j < loopCount; j++) {
 		LinkedList<int> mine;
 		std::list<int> standard;
 
 		t = clock();
-		for(int i = 0; i < 100000; i++) {mine.addElementFront(i);}
+		for(int i = 0; i < 2000000; i++) {mine.addElementFront(i);}
 		mine.sort(bigger);
 		//mine.applyFunction(square);
 		//mine.filterFunction(even);
@@ -49,7 +50,7 @@ int main(int argc, char** argv) {
 		tot1A += tot1;
 
 		t = clock();
-		for(int i = 0; i < 100000; i++) {standard.push_front(i);}
+		for(int i = 0; i < 2000000; i++) {standard.push_front(i);}
 		//for(auto& i : standard) {i = square(i);}
 		//standard.unique(same);
 		//standard.remove_if(even);
@@ -63,9 +64,9 @@ int main(int argc, char** argv) {
 		std::cout << "Round " << j << " complete." << '\n';
 	}
 	std::cout << '\n';
-	float avg = tot/100;
-	std::cout << "Custom implementation average took: " << tot1A/100.0 << " ticks." << '\n'; 
-	std::cout << "Standard implementation average took: " << tot2A/100.0 << " ticks." << '\n';
+	float avg = tot/loopCount;
+	std::cout << "Custom implementation average took: " << tot1A/loopCount << " ticks." << '\n'; 
+	std::cout << "Standard implementation average took: " << tot2A/loopCount << " ticks." << '\n';
 	std::cout << "Custom implementation speed is " << avg*100 << "% standard implementation speed." << '\n';
 
 	return 0;

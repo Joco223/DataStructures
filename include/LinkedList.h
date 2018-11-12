@@ -12,20 +12,6 @@ private:
 	Link* last;
 	int length;
 
-	/*Link* merge(Link* head1, Link* head2, bool f(T, T)) {
-		if(head1 == nullptr) {
-			return head2;
-		}else if(head2 == nullptr) {
-			return head1;
-		}else if(f(head1->content, head2->content)) {
-			head1->next = merge(head1->next, head2, f);
-			return head1;
-		}else{
-			head2->next = merge(head2->next, head1, f);
-			return head2;
-		}
-	}*/
-
 	Link* merge(Link* head1, Link* head2, bool f(T, T)) {
 		Link* masterHead;
 		Link* tmpBack;
