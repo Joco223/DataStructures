@@ -39,8 +39,10 @@ int main(int argc, char** argv) {
 
 		t = clock();
 		for(int i = 0; i < 1000000; i++) {mine.addElementBack(i);}
+		
+		//mine.applyFunction(square);
+		mine.filterFunction(even);
 		//mine.unique_seq(same);
-		mine.applyFunction(square);
 		//mine.reverseElements();
 		t = clock() - t;
 		float tot1 = t;
@@ -48,7 +50,7 @@ int main(int argc, char** argv) {
 
 		t = clock();
 		for(int i = 0; i < 1000000; i++) {standard.push_back(i);}
-		for(auto& i : standard) {i = square(i);}
+		//for(auto& i : standard) {i = square(i);}
 		//standard.unique(same);
 		standard.remove_if(even);
 		//standard.reverse();
