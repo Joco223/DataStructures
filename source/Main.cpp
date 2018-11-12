@@ -22,7 +22,7 @@ bool same(int x, int y) {return x == y;}
 
 int main(int argc, char** argv) {
 
-	/*LinkedList<int> test = {1, 0, 2, 9, 3, 8, 1, 1, 4, 7, 5, 6};
+	/*LinkedList<int> test = {1, 0, 2, 9, 3, 8, 4, 7, 5, 6};
 	test.sort(bigger);
 	test.print();*/
 
@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
 		std::list<int> standard;
 
 		t = clock();
-		for(int i = 0; i < 1000000; i++) {mine.addElementFront(i);}
+		for(int i = 0; i < 100000; i++) {mine.addElementFront(i);}
 		mine.sort(bigger);
 		//mine.applyFunction(square);
 		//mine.filterFunction(even);
@@ -49,12 +49,12 @@ int main(int argc, char** argv) {
 		tot1A += tot1;
 
 		t = clock();
-		for(int i = 0; i < 1000000; i++) {standard.push_front(i);}
+		for(int i = 0; i < 100000; i++) {standard.push_front(i);}
 		//for(auto& i : standard) {i = square(i);}
 		//standard.unique(same);
 		//standard.remove_if(even);
 		//standard.reverse();
-		//standard.sort();
+		standard.sort(bigger);
 		t = clock() - t;
 		float tot2 = t;
 		tot2A += tot2;

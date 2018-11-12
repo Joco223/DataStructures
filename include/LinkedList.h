@@ -12,7 +12,7 @@ private:
 	Link* last;
 	int length;
 
-	Link* merge(Link* head1, Link* head2, bool f(T, T)) {
+	/*Link* merge(Link* head1, Link* head2, bool f(T, T)) {
 		if(head1 == nullptr) {
 			return head2;
 		}else if(head2 == nullptr) {
@@ -24,6 +24,52 @@ private:
 			head2->next = merge(head2->next, head1, f);
 			return head2;
 		}
+	}*/
+
+	Link* merge(Link* head1, Link* head2, bool f(T, T)) {
+		Link* masterHead;
+		Link* tmpBack;
+		if(head1 == nullptr) {
+			return head2;
+		}else if(head2 == nullptr) {
+			return head1;
+		}else{
+			bool nBreak = true;
+			if(f(head1->content, head2->content)) {
+				masterHead = head1;
+				head1 = head1->next;
+				if(head1 == nullptr) {masterHead->next = head2; nBreak = false;}
+			}else{
+				masterHead = head2;
+				head2 = head2->next;
+				if(head2 == nullptr) {masterHead->next = head1; nBreak = false;}
+			}
+			tmpBack = masterHead;
+
+			if(nBreak) {
+				while(true) {
+					if(f(head1->content, head2->content)) {
+						masterHead->next = head1;
+						masterHead = masterHead->next;
+						head1 = head1->next;
+						if(head1 == nullptr) {
+							masterHead->next = head2;
+							break;
+						}
+					}else{
+						masterHead->next = head2;
+						masterHead = masterHead->next;
+						head2 = head2->next;
+						if(head2 == nullptr) {
+							masterHead->next = head1;
+							break;
+						}
+					}
+				}
+			}
+		}
+		masterHead = tmpBack;
+		return masterHead;
 	}
 
 	Link* mergeSort(Link* head, bool f(T, T)) {
@@ -48,8 +94,10 @@ private:
 		ptr2->last = slow;
 		slow->next = nullptr;
 		slow = nullptr;
-		//std::cout << 1;
-		return merge(mergeSort(head, f), mergeSort(ptr2, f), f);
+		Link* a = mergeSort(head, f);
+		Link* b = mergeSort(ptr2, f);
+
+		return merge(a, b, f);
 	}
 	
 	void print(Link* head) {
