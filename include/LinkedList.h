@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 template<class T>
 class LinkedList {
@@ -33,7 +34,7 @@ public:
 		bool firstL = true;
 		for(auto item = std::rbegin(input); item != std::rend(input); ++item) {
 			Link* current = new Link(*item, first);
-			if(firstL) {last = current;}
+			if(firstL) {last = current; firstL = false;}
 			first = current;
 			length++;
 		}
@@ -194,6 +195,17 @@ public:
 		length--;
 	}
 
+	//Remove an element from the linked list
+	void removeElement(Link* prev) {
+		Link* target;
+		if(prev == nullptr) {first = first->next;}else{
+			target = prev->next;
+			prev->next = target->next;
+		}
+		if(prev == last) {last = prev; prev->next = nullptr;}
+		length--;
+	}
+
 	//Apply a function to all elements of the linked list
 	void applyFunction(T f(T)) {
 		Link* current = first;
@@ -205,12 +217,14 @@ public:
 
 	//Apply a function to all elements of the linked list and remove ones that return false
 	void filterFunction(bool f(T)) {
+		Link* prev = nullptr;
 		Link* current = first;
-		int index = 0;
 		while(current != nullptr) {
 			bool result = f(current->content);
+			if(!result) {removeElement(prev);}
+			prev = current;
 			current = current->next;
-			if(result) {index++;}else{removeElement(index);}
+			
 		}
 	}
 
@@ -229,16 +243,23 @@ public:
 
 	//Remove duplicates from the linked list
 	void unique(bool f(T, T)) {
-		for(int i = 0; i < length; i++) {
-			Link* current = getElement(i);
+		std::vector<T> seen;
+		Link* prev = nullptr;
+		Link* current = first;
+		int i = 0;
+		while(current != nullptr) {
 			bool exists = false;
-			for(int j = 0; j < length; j++) {
-				Link* comparison = getElement(j);
-				if(j != i && f(current->content, comparison->content)) {
-					removeElement(j);
-					break;
-				}
+			for(auto v : seen) {
+				if(f(current->content, v)) {exists = true; break;}
 			}
+			if(exists) {
+				removeElement(prev);
+			}else{
+				seen.push_back(current->content);
+			}
+			prev = current;
+			current = current->next;
+			i++;
 		}
 	}
 

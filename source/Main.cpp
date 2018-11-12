@@ -21,11 +21,7 @@ bool same(int x, int y) {return x == y;}
 
 int main(int argc, char** argv) {
 
-	LinkedList<int> test = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-	test.filterFunction(even);
-	test.print();
-
-	/*clock_t t;
+	clock_t t;
 	float tot = 0;
 	float tot1A = 0;
 	float tot2A = 0;
@@ -37,17 +33,15 @@ int main(int argc, char** argv) {
 		std::forward_list<int> standard;
 
 		t = clock();
-		for(int i = 0; i < 1000000; i++) {mine.addElementFront(i);}
-		LinkedList<int>::Link* it = mine.getElement(it);
-		while(it != nullptr) {sum1 += it->content; it = it->next;}
-		//for(int i = 0; i < 10000; i++) {sum1 += mine.getElement(i)->content;}
+		for(int i = 0; i < 20000; i++) {mine.addElementFront(i);}
+		mine.unique(same);
 		t = clock() - t;
 		float tot1 = t;
 		tot1A += tot1;
 
 		t = clock();
-		for(int i = 0; i < 1000000; i++) {standard.push_front(i);}
-		for(auto element: standard) sum2 += element;
+		for(int i = 0; i < 20000; i++) {standard.push_front(i);}
+		standard.unique(same);
 		t = clock() - t;
 		float tot2 = t;
 		tot2A += tot2;
@@ -59,7 +53,7 @@ int main(int argc, char** argv) {
 	float avg = tot/100;
 	std::cout << "Custom implementation average took: " << tot1A/100.0 << " ticks." << '\n'; 
 	std::cout << "Standard implementation average took: " << tot2A/100.0 << " ticks." << '\n';
-	std::cout << "Custom implementation speed is " << avg*100 << "% standard implementation speed." << '\n';*/
+	std::cout << "Custom implementation speed is " << avg*100 << "% standard implementation speed." << '\n';
 
 	return 0;
 }
