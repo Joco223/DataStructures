@@ -22,8 +22,8 @@ bool same(int x, int y) {return x == y;}
 
 int main(int argc, char** argv) {
 
-	/*LinkedList<int> test = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-	test.filterFunction(even);
+	/*LinkedList<int> test = {1, 0, 2, 9, 3, 8, 1, 1, 4, 7, 5, 6};
+	test.sort(bigger);
 	test.print();*/
 
 	clock_t t;
@@ -38,10 +38,10 @@ int main(int argc, char** argv) {
 		std::list<int> standard;
 
 		t = clock();
-		for(int i = 0; i < 1000000; i++) {mine.addElementBack(i);}
-		
+		for(int i = 0; i < 1000000; i++) {mine.addElementFront(i);}
+		mine.sort(bigger);
 		//mine.applyFunction(square);
-		mine.filterFunction(even);
+		//mine.filterFunction(even);
 		//mine.unique_seq(same);
 		//mine.reverseElements();
 		t = clock() - t;
@@ -49,11 +49,12 @@ int main(int argc, char** argv) {
 		tot1A += tot1;
 
 		t = clock();
-		for(int i = 0; i < 1000000; i++) {standard.push_back(i);}
+		for(int i = 0; i < 1000000; i++) {standard.push_front(i);}
 		//for(auto& i : standard) {i = square(i);}
 		//standard.unique(same);
-		standard.remove_if(even);
+		//standard.remove_if(even);
 		//standard.reverse();
+		//standard.sort();
 		t = clock() - t;
 		float tot2 = t;
 		tot2A += tot2;

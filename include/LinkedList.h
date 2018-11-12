@@ -11,12 +11,61 @@ private:
 	Link* first;
 	Link* last;
 	int length;
+
+	Link* merge(Link* head1, Link* head2, bool f(T, T)) {
+		if(head1 == nullptr) {
+			return head2;
+		}else if(head2 == nullptr) {
+			return head1;
+		}else if(f(head1->content, head2->content)) {
+			head1->next = merge(head1->next, head2, f);
+			return head1;
+		}else{
+			head2->next = merge(head2->next, head1, f);
+			return head2;
+		}
+	}
+
+	Link* mergeSort(Link* head, bool f(T, T)) {
+		if(head == nullptr) {
+			return nullptr;
+		}else if(head->next == nullptr) {
+			return head;
+		}
+
+		Link* slow = head;
+		Link* fast = head->next;
+		while(fast != nullptr) {
+			fast = fast->next;
+			if(fast != nullptr) {
+				slow->last = slow;
+				slow = slow->next;
+				fast->last = fast;
+				fast = fast->next;
+			}
+		}
+		Link* ptr2 = slow->next;
+		ptr2->last = slow;
+		slow->next = nullptr;
+		slow = nullptr;
+		//std::cout << 1;
+		return merge(mergeSort(head, f), mergeSort(ptr2, f), f);
+	}
+	
+	void print(Link* head) {
+		Link* current = head;
+		while(current != nullptr) {
+			std::cout << current->content << " ";
+			current = current->next;
+		}
+	}
 public:
 	struct Link {
 		T content;
 		Link* next;
 		Link* last;
 		Link() {next = nullptr; last = nullptr;};
+		Link(Link* l) {last = l;}
 		Link(T t, Link* n, Link* l) {content = t; next = n; last = l;};
 	};
 
@@ -75,6 +124,17 @@ public:
 
 	//Get the length of the linked list
 	int getLength() {return length;}
+
+	//Get the length of the given linked list
+	int getLength(Link* start) {
+		int l = 0;
+		Link* current = start;
+		while(current != nullptr) {
+			current = current->next;
+			l++;
+		}
+		return l;
+	}
 
 	//Get first element
 	Link* getElementFront() {
@@ -151,19 +211,9 @@ public:
 		
 	}
 
-	//Sort elements in the linked list using bubble sort
+	//Sort the elements in the linked list
 	void sort(bool f(T, T)) {
-		for(int i = 0; i < length-1; i++){
-			for(int j = 0; j < length-i-1; j++){
-				Link* current = getElement(j);
-				Link* next = getElement(j+1);
-				if(current != nullptr && next != nullptr) {
-					if(f(current->content, next->content)) {
-						swapElements(current, next);
-					} 
-				}
-			}
-		}
+		first = mergeSort(first, f);
 	}
 
 	//Connect ends of to lists
@@ -179,7 +229,7 @@ public:
 
 	//Add a new element to the front of the linked list
 	void addElementFront(T element) {
-		Link* node = new Link(element, first);
+		Link* node = new Link(element, first, nullptr);
 		if(first == nullptr) {last = node;}
 		first = node;
 		length++;
@@ -328,7 +378,7 @@ public:
 	void print() {
 		Link* current = first;
 		while(current != nullptr) {
-			std::cout << current->content << '\n';
+			std::cout << current->content << " ";
 			current = current->next;
 		}
 	};
