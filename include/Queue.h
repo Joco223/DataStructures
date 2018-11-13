@@ -11,12 +11,14 @@ public:
 	Queue() {};
 
 	//Push new element to the back of the queue
-	void push(T element) {queue.addElement(element, queue.getLength());};
+	//Param element -> new element to be pushed
+	void push(T element) {queue.addElementBack(element);};
 
 	//Pop an element from the fron of the queue
-	void pop() {queue.removeElement(0);};
+	void pop() {queue.removeElementFront();};
 
 	//Get the value from the back or the front of the queue
-	T peek_back() {return queue.getElement(queue.getLength()-1)->content;};
-	T peek_front() {return queue.getElement(0)->content;};
+	//Returns the content of the front/back element
+	T peek_back() {return queue.getElementBack()->content;};
+	T peek_front() {return queue.getElementFront()->content;};
 };

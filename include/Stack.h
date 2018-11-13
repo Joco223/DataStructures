@@ -13,47 +13,57 @@ public:
 	Stack(int maxLength) {maxSize = maxLength; length = 0;};
 
 	//Push new element to top of the stack
-	int push(T element) {
+	//Param element -> element to be pushed
+	//Returns true if successful or false in case of failure (max length of the stack reached)
+	bool push(T element) {
 		if(maxSize == -1) {
-			stack.addElement(element, 0);
+			stack.addElementFront(element);
 			length++;
-			return 1;
+			return true;
 		}else if(maxSize - length > 0) {
-			stack.addElement(element, 0);
+			stack.addElementFront(element);
 			length++;
-			return 1;
+			return true;
 		}else{
-			return 0;
+			return false;
 		}
 	};
 
 	//Pop an element from the top of the stack
-	int pop() {
+	//Returns true if successful or false in case of failure (no elements to pop)
+	bool pop() {
 		if(length > 0) {
-			stack.removeElement(0);
+			stack.removeElementFront();
 			length--;
-			return 1;
+			return true;
 		}else{
-			return 0;
+			return false;
 		}
 	};
 
 	//Get the value from the top element of the stack
-	T peek() {return stack.getElement(0)->content;};
+	//Returns T, the value
+	T peek() {return stack.getElementFront()->content;};
 
 	//Check if the stack is full
+	//Returns true if the stack has not reached its max size, false otherwise
 	bool isFull() {
 		if(maxSize == -1) {
-			return 0;
+			return false;
 		}else if(maxSize - length > 0) {
-			return 0;
+			return false;
 		}else{
-			return 1;
+			return true;
 		}
 	};
 
 	//Check if the stack is empty
+	//Returns true if there are no elements in the stack, false otherwise
 	bool isEmpty() {
-		if(length == 0) {return 1;}else{return 0;}
+		if(length == 0) {
+			return true;
+		}else{
+			return false;
+		}
 	};
 };
