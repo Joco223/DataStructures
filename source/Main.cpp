@@ -1,9 +1,8 @@
 #include <iostream>
-#include <time.h>
-#include <forward_list>
 #include <list>
 #include <vector>
 #include <algorithm>
+#include <chrono>
 
 #include "LinkedList.h"
 #include "Stack.h"
@@ -25,69 +24,38 @@ bool same(int x, int y) {return x == y;}
 
 int main(int argc, char** argv) {
 
-	/*jci::Array<int> test = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
-	test.removeElement(2);
-	test.print();*/
-
-	/*jci::LinkedList<int> test = {1, 0, 2, 9, 3, 8, 4, 7, 5, 6};
-	test.sort(bigger);
-	test.print();*/
-
-	/* Array Tests:
-	Add elements to front - +72%
-	Add elements to back - same
-	Remove whole vector by removing the first element - +43%
-	Remove whole vector by removing the last element - +70%
-	Apply function to each element - +76%
-	Remove element if function returns false - +35%
+	/* jci::Array Tests compared to std::vector:
+	Add elements to front - (Standard first: +68% - Custom First: +57%)
 	*/
 
-	clock_t t;
-	float tot = 0;
-	float tot1A = 0;
-	float tot2A = 0;
-	volatile int sum1 = 0;
-	volatile int sum2 = 0;
-	float loopCount = 50;
-	
-	for(int j = 0; j < loopCount; j++) {
-		jci::Array<int> mine = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-		std::vector<int> standard = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+	int loopCount = 100;
+	int sampleSize = 40000;
 
-		t = clock();
-		for(int i = 0; i < 30000; i++) {mine.addElementFront(i);}
-		//for(int i = 0; i < 20000; i++) {mine.removeFrontElement(); }
-		//mine.sort(bigger);
-		//mine.applyFunction(square);
-		mine.filterFunction(even);
-		//mine.unique_seq(same);
-		//mine.reverseElements();
-		t = clock() - t;
-		float tot1 = t;
-		tot1A += tot1;
-
-		t = clock();
-		for(int i = 0; i < 30000; i++) {standard.insert(standard.begin(), i);}
-		//for(int i = 0; i < 20000; i++) {standard.erase(standard.begin());}
-		standard.erase(std::remove_if(standard.begin(), standard.end(), even));
-		//for(auto& i : standard) {i = square(i);}
-		//standard.unique(same);
-		//standard.remove_if(even);
-		//standard.reverse();
-		//standard.sort(bigger);
-		t = clock() - t;
-		float tot2 = t;
-		tot2A += tot2;
-		
-		tot += (tot2/tot1);
-		std::cout << "Round " << j << " complete." << '\n';
+	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+	for(int i = 0; i < loopCount; i++) {
+		jci::Array<int> mine;
+		for(int j = 0; j < sampleSize; j++) {mine.addElementFront(j);}
+		std::cout << "Custom implementation round: " << i << " finished." << '\r';
 	}
-	std::cout << '\n';
+	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> timeSpan = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+	std::cout << "Custom implementation average took: " << timeSpan.count()/loopCount << " seconds." << '\n';
 
-	float avg = tot/loopCount;
-	std::cout << "Custom implementation average took: " << tot1A/loopCount << " ticks." << '\n'; 
-	std::cout << "Standard implementation average took: " << tot2A/loopCount << " ticks." << '\n';
-	std::cout << "Custom implementation speed is " << avg*100 << "% standard implementation speed." << '\n';
+	std::chrono::high_resolution_clock::time_point t3 = std::chrono::high_resolution_clock::now();
+	for(int i = 0; i < loopCount; i++) {
+		std::vector<int> standard;
+		for(int j = 0; j < sampleSize; j++) {standard.insert(standard.begin(), j);}
+		std::cout << "Standard implementation round: " << i << " finished." << '\r';
+	}
+	std::chrono::high_resolution_clock::time_point t4 = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> timeSpan2 = std::chrono::duration_cast<std::chrono::duration<double>>(t4 - t3);
+	std::cout << "Standard implementation average took: " << timeSpan2.count()/loopCount << " seconds." << '\n';
+
+	int amount = timeSpan2.count()/timeSpan.count()*100 - 100;
+	
+	std::cout << "Custom implementation speed is: ";
+	if(amount < 0) {std::cout << "-";}else{std::cout << "+";};
+	std::cout << amount << "% standard implementation speed." << '\n';
 
 	return 0;
 }
