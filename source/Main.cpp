@@ -2,12 +2,15 @@
 #include <time.h>
 #include <forward_list>
 #include <list>
+#include <vector>
+#include <algorithm>
 
 #include "LinkedList.h"
 #include "Stack.h"
 #include "Deque.h"
 #include "Queue.h"
 #include "BinaryTree.h"
+#include "Array.h"
 
 bool biggerThan10(int x) {return x>10;}
 
@@ -22,9 +25,22 @@ bool same(int x, int y) {return x == y;}
 
 int main(int argc, char** argv) {
 
-	/*LinkedList<int> test = {1, 0, 2, 9, 3, 8, 4, 7, 5, 6};
+	/*jci::Array<int> test = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
+	test.removeElement(2);
+	test.print();*/
+
+	/*jci::LinkedList<int> test = {1, 0, 2, 9, 3, 8, 4, 7, 5, 6};
 	test.sort(bigger);
 	test.print();*/
+
+	/* Array Tests:
+	Add elements to front - +72%
+	Add elements to back - same
+	Remove whole vector by removing the first element - +43%
+	Remove whole vector by removing the last element - +70%
+	Apply function to each element - +76%
+	Remove element if function returns false - +35%
+	*/
 
 	clock_t t;
 	float tot = 0;
@@ -35,14 +51,15 @@ int main(int argc, char** argv) {
 	float loopCount = 50;
 	
 	for(int j = 0; j < loopCount; j++) {
-		LinkedList<int> mine;
-		std::list<int> standard;
+		jci::Array<int> mine = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+		std::vector<int> standard = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
 		t = clock();
-		for(int i = 0; i < 2000000; i++) {mine.addElementFront(i);}
-		mine.sort(bigger);
+		for(int i = 0; i < 30000; i++) {mine.addElementFront(i);}
+		//for(int i = 0; i < 20000; i++) {mine.removeFrontElement(); }
+		//mine.sort(bigger);
 		//mine.applyFunction(square);
-		//mine.filterFunction(even);
+		mine.filterFunction(even);
 		//mine.unique_seq(same);
 		//mine.reverseElements();
 		t = clock() - t;
@@ -50,12 +67,14 @@ int main(int argc, char** argv) {
 		tot1A += tot1;
 
 		t = clock();
-		for(int i = 0; i < 2000000; i++) {standard.push_front(i);}
+		for(int i = 0; i < 30000; i++) {standard.insert(standard.begin(), i);}
+		//for(int i = 0; i < 20000; i++) {standard.erase(standard.begin());}
+		standard.erase(std::remove_if(standard.begin(), standard.end(), even));
 		//for(auto& i : standard) {i = square(i);}
 		//standard.unique(same);
 		//standard.remove_if(even);
 		//standard.reverse();
-		standard.sort(bigger);
+		//standard.sort(bigger);
 		t = clock() - t;
 		float tot2 = t;
 		tot2A += tot2;
@@ -64,6 +83,7 @@ int main(int argc, char** argv) {
 		std::cout << "Round " << j << " complete." << '\n';
 	}
 	std::cout << '\n';
+
 	float avg = tot/loopCount;
 	std::cout << "Custom implementation average took: " << tot1A/loopCount << " ticks." << '\n'; 
 	std::cout << "Standard implementation average took: " << tot2A/loopCount << " ticks." << '\n';
