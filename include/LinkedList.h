@@ -403,7 +403,7 @@ namespace jci {
 			LinkedList<T> newLL;
 			Link* currentA = A.first;
 			Link* currentB = B.first;
-			while(currentA != nullptr || currentB != nullptr) { 
+			while(currentA != nullptr && currentB != nullptr) { 
 				newLL.addElementFront(f(currentA->content, currentB->content));
 				currentA = currentA->next;
 				currentB = currentB->next;

@@ -29,7 +29,7 @@ namespace jci {
 		T operator[](int pos) {return data[pos];}
 
 		//Returns the element at pos if the pos is in the bounds of the array
-		T at(int pos) {if(pos > 0 && pos < length) {return data[pos];}}
+		T at(int pos) {if(pos >= 0 && pos < length) {return data[pos];}else{throw std::out_of_range("Invalid index: " + pos);}}
 
 		//Adds element to the front of the array
 		void addElementFront(T element) {
