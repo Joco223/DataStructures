@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
 	std::chrono::duration<double> timeSpan2 = std::chrono::duration_cast<std::chrono::duration<double>>(t4 - t3);
 	std::cout << "Standard implementation average took: " << timeSpan2.count()/loopCount << " seconds." << '\n';
 
-	/*std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
+	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 	for(int i = 0; i < loopCount; i++) {
 		jci::Array<int> mine;
 		for(int j = 0; j < sampleSize; j++) {mine.addElementFront(j);}
@@ -51,15 +51,15 @@ int main(int argc, char** argv) {
 	}
 	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> timeSpan = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
-	std::cout << "Custom implementation average took: " << timeSpan.count()/loopCount << " seconds." << '\n';*/
+	std::cout << "Custom implementation average took: " << timeSpan.count()/loopCount << " seconds." << '\n';
 
 	
 
-	/*int amount = timeSpan2.count()/timeSpan.count()*100 - 100;
+	int amount = timeSpan2.count()/timeSpan.count()*100 - 100;
 	
 	std::cout << "Custom implementation speed is: ";
 	if(amount < 0) {std::cout << "-";}else{std::cout << "+";};
-	std::cout << amount << "% standard implementation speed." << '\n';*/
+	std::cout << amount << "% standard implementation speed." << '\n';
 
 	return 0;
 }
