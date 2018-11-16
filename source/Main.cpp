@@ -48,15 +48,27 @@ int main(int argc, char** argv) {
 	}
 	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> timeSpan = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+<<<<<<< HEAD
 	std::cerr << "Custom implementation average took: " << timeSpan.count()/loopCount << " seconds." << '\n';
+=======
+	std::cout << "Custom implementation average took: " << timeSpan.count()/loopCount << " seconds." << '\n';
+>>>>>>> b9a3ae5715e138425a3cb2559c254a29391b3b60
 
 	std::cerr.precision(2);
 
+<<<<<<< HEAD
 	float amount = timeSpan2.count()/timeSpan.count()*100 - 100;
 	
 	std::cerr << "Custom implementation speed is: ";
 	if(amount > 0) {std::cerr << "+";}
 	std::cerr << amount << "% standard implementation speed." << '\n';
+=======
+	int amount = timeSpan2.count()/timeSpan.count()*100 - 100;
+	
+	std::cout << "Custom implementation speed is: ";
+	if(amount < 0) {std::cout << "-";}else{std::cout << "+";};
+	std::cout << amount << "% standard implementation speed." << '\n';
+>>>>>>> b9a3ae5715e138425a3cb2559c254a29391b3b60
 
 	return 0;
 }
