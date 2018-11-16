@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <cstring>
 
 namespace jci {
 	template<class T>
